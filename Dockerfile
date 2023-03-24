@@ -1,4 +1,4 @@
-FROM ubuntu:22.04
+FROM ubuntu:latest
 
 ENV TZ=Europe/London
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
@@ -21,4 +21,8 @@ RUN git clone https://github.com/kercre123/wire-pod/ wire-pod
 
 WORKDIR /wire-pod
 
-CMD sudo ./setup.sh
+CMD sudo STT=vosk ./setup.sh
+
+WORKDIR /wire-pod/chipper
+
+CMD sudo ./start.sh
