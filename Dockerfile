@@ -5,6 +5,8 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN apt-get update \
  && apt-get install -y sudo
+ 
+RUN sudo apt-get -y install avahi-daemon
 
 RUN adduser --disabled-password --gecos '' wirepod
 RUN adduser wirepod sudo
