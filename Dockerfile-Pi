@@ -1,1 +1,30 @@
+FROM alpine:latest
 
+ENV TZ=Europe/London
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+RUN apk update \
+ && apk add sudo
+ 
+RUN sudo apk add avahi
+
+RUN addgroup -S wirepod && adduser -S -D wirepod -G wirepod
+RUN echo '%wheel ALL=(ALL) ALL' > /etc/sudoers.d/wheel
+RUN adduser wirepod wheel
+
+USER wirepod
+
+RUN sudo apk add git
+RUN sudo mkdir /wire-pod
+RUN sudo chown -R wirepod:wirepod /wire-pod
+
+RUN cd /wire-pod
+RUN git clone https://github.com/kercre123/wire-pod/ wire-pod
+
+WORKDIR /wire-pod
+
+CMD sudo STT=vosk ./setup.sh
+
+WORKDIR /wire-pod/chipper
+
+CMD sudo ./start.sh
