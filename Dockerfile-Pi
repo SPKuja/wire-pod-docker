@@ -1,20 +1,20 @@
-FROM alpine:latest
+FROM arm64v8/ubuntu:20.04
 
 ENV TZ=Europe/London
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-RUN apk update \
- && apk add sudo
+RUN apt-get update \
+ && apt-get install -y sudo
  
-RUN sudo apk add avahi
+RUN sudo apt-get -y install avahi-daemon
 
-RUN addgroup -S wirepod && adduser -S -D wirepod -G wirepod
-RUN echo '%wheel ALL=(ALL) ALL' > /etc/sudoers.d/wheel
-RUN adduser wirepod wheel
+RUN adduser --disabled-password --gecos '' wirepod
+RUN adduser wirepod sudo
+RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
 USER wirepod
 
-RUN sudo apk add git
+RUN sudo apt-get update && sudo apt-get install -y git
 RUN sudo mkdir /wire-pod
 RUN sudo chown -R wirepod:wirepod /wire-pod
 
