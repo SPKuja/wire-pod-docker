@@ -27,4 +27,5 @@ CMD sudo STT=vosk ./setup.sh
 
 WORKDIR /wire-pod/chipper
 
+CMD sudo ./setup.sh
 CMD sudo ./start.sh
