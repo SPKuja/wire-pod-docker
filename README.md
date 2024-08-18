@@ -1,4 +1,4 @@
-$ sudo docker run -d &#92;
+sudo docker run -d &#92;
   --name=wire-pod &#92;
   -p 80:80 &#92;
   -p 8080:8080 &#92;
