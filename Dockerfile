@@ -19,4 +19,4 @@ WORKDIR /wire-pod
 RUN git clone https://github.com/kercre123/wire-pod/ .
 
 # Setup and start
-CMD STT=vosk ./setup.sh && ./chipper/start.sh
+CMD STT=vosk sudo ./setup.sh && ./chipper/start.sh
