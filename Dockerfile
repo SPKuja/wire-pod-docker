@@ -3,28 +3,20 @@ FROM ubuntu:latest
 ENV TZ=Europe/London
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
+# Install necessary packages
 RUN apt-get update \
- && apt-get install -y sudo
- 
-RUN sudo apt-get -y install avahi-daemon
-
-RUN adduser --disabled-password --gecos '' wirepod
-RUN adduser wirepod sudo
-RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+ && apt-get install -y sudo avahi-daemon git \
+ && adduser --disabled-password --gecos '' wirepod \
+ && adduser wirepod sudo \
+ && echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers \
+ && mkdir /wire-pod \
+ && chown -R wirepod:wirepod /wire-pod
 
 USER wirepod
-
-RUN sudo apt-get update && sudo apt-get install -y git
-RUN sudo mkdir /wire-pod
-RUN sudo chown -R wirepod:wirepod /wire-pod
-
-RUN cd /wire-pod
-RUN git clone https://github.com/kercre123/wire-pod/ wire-pod
-
 WORKDIR /wire-pod
 
-CMD sudo STT=vosk ./setup.sh
+# Clone the repository
+RUN git clone https://github.com/kercre123/wire-pod/ .
 
-WORKDIR /wire-pod/chipper
-
-CMD sudo ./start.sh
+# Setup and start
+CMD STT=vosk ./setup.sh && ./chipper/start.sh
